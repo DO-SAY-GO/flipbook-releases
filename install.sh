@@ -12,6 +12,7 @@ STATE_DIR="${DATA_ROOT}/state"
 BINARY_PATH="${BIN_DIR}/flipbook-cli"
 LAST_UPDATE_FILE="${STATE_DIR}/last-update-check"
 UPDATE_INTERVAL_SECONDS="${FLIPBOOK_UPDATE_INTERVAL_SECONDS:-86400}"
+CHECKSUMS_NAME="SHA256SUMS.txt"
 
 log() {
   printf '%s\n' "$*" >&2
@@ -200,19 +201,77 @@ get_local_version_tag() {
   printf '%s\n' "$version"
 }
 
-asset_name_for_tag() {
-  local tag="$1"
-  case "$(uname -s)" in
-    Linux)
-      printf 'flipbook-%s-linux-x64.tar.gz\n' "$tag"
+detect_arch() {
+  case "$(uname -m)" in
+    x86_64|amd64)
+      printf 'x64\n'
       ;;
-    Darwin)
-      printf 'flipbook-%s-macos.zip\n' "$tag"
+    arm64|aarch64)
+      printf 'arm64\n'
       ;;
     *)
       return 1
       ;;
   esac
+}
+
+asset_name_for_current_platform() {
+  local arch
+  arch="$(detect_arch)" || fail "Unsupported architecture: $(uname -m)"
+
+  case "$(uname -s)" in
+    Linux)
+      printf 'linux-%s.tar.gz\n' "$arch"
+      ;;
+    Darwin)
+      printf 'macos-%s.zip\n' "$arch"
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+compute_sha256() {
+  local file="$1"
+
+  if command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$file" | awk '{print $1}'
+  elif command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$file" | awk '{print $1}'
+  elif command -v openssl >/dev/null 2>&1; then
+    openssl dgst -sha256 "$file" | awk '{print $NF}'
+  else
+    fail "No SHA-256 tool is available. Install shasum, sha256sum, or openssl."
+  fi
+}
+
+expected_checksum_for_asset() {
+  local asset="$1" checksums_file="$2"
+
+  awk -v file="$asset" '
+    {
+      name=$2
+      sub(/^\*/, "", name)
+      if (name == file) {
+        print $1
+        exit
+      }
+    }
+  ' "$checksums_file"
+}
+
+verify_archive_checksum() {
+  local archive_path="$1" asset="$2" checksums_path="$3" expected actual
+
+  expected="$(expected_checksum_for_asset "$asset" "$checksums_path")"
+  [[ -n "$expected" ]] || fail "No checksum entry found for ${asset}."
+
+  actual="$(compute_sha256 "$archive_path")"
+  expected="$(printf '%s' "$expected" | tr '[:upper:]' '[:lower:]')"
+  actual="$(printf '%s' "$actual" | tr '[:upper:]' '[:lower:]')"
+
+  [[ "$actual" == "$expected" ]] || fail "Checksum mismatch for ${asset}."
 }
 
 extract_archive() {
@@ -240,11 +299,12 @@ extract_archive() {
 
 download_and_install_binary() {
   local tag="$1"
-  local asset archive_url tmp_dir archive_path candidate tmp_binary
+  local asset archive_url checksums_url tmp_dir archive_path checksums_path candidate tmp_binary
 
   mkdir -p "$BIN_DIR" "$STATE_DIR"
-  asset="$(asset_name_for_tag "$tag")" || fail "Unsupported operating system: $(uname -s)"
+  asset="$(asset_name_for_current_platform)" || fail "Unsupported operating system: $(uname -s)"
   archive_url="https://github.com/${RELEASE_REPO}/releases/download/${tag}/${asset}"
+  checksums_url="https://github.com/${RELEASE_REPO}/releases/download/${tag}/${CHECKSUMS_NAME}"
   tmp_dir="$(make_temp_dir)"
 
   cleanup_tmp_dir() {
@@ -253,9 +313,12 @@ download_and_install_binary() {
   trap cleanup_tmp_dir RETURN
 
   archive_path="${tmp_dir}/${asset##*/}"
+  checksums_path="${tmp_dir}/${CHECKSUMS_NAME}"
 
   log "Installing FlipBook ${tag}..."
   curl -fL --connect-timeout 20 -o "$archive_path" "$archive_url"
+  curl -fL --connect-timeout 20 -o "$checksums_path" "$checksums_url"
+  verify_archive_checksum "$archive_path" "$asset" "$checksums_path"
   extract_archive "$archive_path" "$tmp_dir"
 
   candidate="$(find "$tmp_dir" -type f \( -name 'flipbook' -o -name 'flipbook-cli' \) | head -n 1)"

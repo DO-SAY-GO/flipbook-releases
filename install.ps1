@@ -14,6 +14,7 @@ $CliPath = Join-Path $InstallDir "flipbook-cli.exe"
 $StateDir = Join-Path $DataRoot "state"
 $LastUpdateFile = Join-Path $StateDir "last-update-check.txt"
 $InstalledTagFile = Join-Path $StateDir "installed-tag.txt"
+$ChecksumsName = "SHA256SUMS.txt"
 $UpdateIntervalSeconds = if ($env:FLIPBOOK_UPDATE_INTERVAL_SECONDS) { [int]$env:FLIPBOOK_UPDATE_INTERVAL_SECONDS } else { 86400 }
 $Token = if ($env:GH_TOKEN) { $env:GH_TOKEN } elseif ($env:GITHUB_TOKEN) { $env:GITHUB_TOKEN } else { $null }
 
@@ -82,6 +83,21 @@ function Get-LatestStableTag {
     return $bestTag
 }
 
+function Get-AssetArch {
+    $arch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant()
+
+    switch ($arch) {
+        "x64" { return "x64" }
+        "arm64" { return "arm64" }
+        default { throw "Unsupported architecture: $arch" }
+    }
+}
+
+function Get-AssetName {
+    $arch = Get-AssetArch
+    return "windows-$arch.zip"
+}
+
 function Get-LocalVersionTag {
     if (-not (Test-Path $CliPath)) {
         return "not_installed"
@@ -144,15 +160,48 @@ function Should-CheckForUpdates {
     return (($now - $lastCheck) -ge $UpdateIntervalSeconds)
 }
 
+function Get-ExpectedChecksum {
+    param(
+        [string]$AssetName,
+        [string]$ChecksumsPath
+    )
+
+    foreach ($line in Get-Content $ChecksumsPath) {
+        if ($line -match '^(?<hash>[A-Fa-f0-9]{64})\s+\*?(?<name>\S+)$') {
+            if ($Matches["name"] -eq $AssetName) {
+                return $Matches["hash"].ToLowerInvariant()
+            }
+        }
+    }
+
+    throw "No checksum entry found for $AssetName."
+}
+
+function Test-ArchiveChecksum {
+    param(
+        [string]$ArchivePath,
+        [string]$AssetName,
+        [string]$ChecksumsPath
+    )
+
+    $expected = Get-ExpectedChecksum -AssetName $AssetName -ChecksumsPath $ChecksumsPath
+    $actual = (Get-FileHash -Path $ArchivePath -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($actual -ne $expected) {
+        throw "Checksum mismatch for $AssetName."
+    }
+}
+
 function Download-And-InstallBinary {
     param([string]$Tag)
 
     Ensure-Directories
 
-    $archiveName = "flipbook-$Tag-windows-x64.zip"
+    $archiveName = Get-AssetName
     $downloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Tag/$archiveName"
+    $checksumsUrl = "https://github.com/$ReleaseRepo/releases/download/$Tag/$ChecksumsName"
     $tempRoot = Join-Path $env:TEMP ("flipbook-" + [guid]::NewGuid().ToString("N"))
     $archivePath = Join-Path $tempRoot $archiveName
+    $checksumsPath = Join-Path $tempRoot $ChecksumsName
     $extractDir = Join-Path $tempRoot "extract"
 
     New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
@@ -160,6 +209,8 @@ function Download-And-InstallBinary {
     try {
         Write-InfoLine "Installing FlipBook $Tag..."
         Invoke-WebRequest -Uri $downloadUrl -Headers (Get-GitHubHeaders) -OutFile $archivePath -TimeoutSec 60
+        Invoke-WebRequest -Uri $checksumsUrl -Headers (Get-GitHubHeaders) -OutFile $checksumsPath -TimeoutSec 30
+        Test-ArchiveChecksum -ArchivePath $archivePath -AssetName $archiveName -ChecksumsPath $checksumsPath
         Expand-Archive -Path $archivePath -DestinationPath $extractDir -Force
 
         $binary = Get-ChildItem $extractDir -Recurse -File |

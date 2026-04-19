@@ -18,3 +18,15 @@ A fast, static landing page designed to be calm, legible, and easy to deploy.
 ## Publishing Source
 
 This site is intended to be served from the `docs/` folder on the `main` branch via GitHub Pages.
+
+## Cloudflare Pages
+
+For direct uploads to Cloudflare Pages, run:
+
+- `./deploy-pages.sh`
+
+The script will:
+
+- create the `flipbook-releases` Pages project if it does not exist
+- deploy `docs/`
+- attach git branch and commit metadata to the deployment

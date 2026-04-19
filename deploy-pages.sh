@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+set -x
+
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$SCRIPT_DIR"
 PROJECT_NAME="${CF_PAGES_PROJECT_NAME:-flipbook-releases}"
@@ -8,6 +10,7 @@ PRODUCTION_BRANCH="${CF_PAGES_PRODUCTION_BRANCH:-main}"
 PUBLISH_DIR="${CF_PAGES_DIR:-docs}"
 DEPLOY_BRANCH="${CF_PAGES_BRANCH:-}"
 CUSTOM_DOMAIN="${CF_PAGES_CUSTOM_DOMAIN:-flipbook.browserbox.io}"
+WRANGLER_CHECK_TIMEOUT="${CF_PAGES_WRANGLER_CHECK_TIMEOUT:-45}"
 
 log() {
   printf '%s\n' "$*" >&2
@@ -28,25 +31,67 @@ resolve_wrangler() {
     return
   fi
 
-  if command -v npx >/dev/null 2>&1; then
-    WRANGLER=(npx wrangler@latest)
-    return
-  fi
+  require_cmd npm
 
-  fail "Install Wrangler or Node.js with npx first."
+  log "Wrangler not found on PATH. Installing it globally with npm..."
+  npm install --global wrangler@latest
+
+  hash -r
+
+  command -v wrangler >/dev/null 2>&1 || fail "Wrangler was installed, but 'wrangler' is still not on PATH. Add your npm global bin directory to PATH and retry."
+  WRANGLER=(wrangler)
 }
 
 run_wrangler() {
   "${WRANGLER[@]}" "$@"
 }
 
+run_wrangler_check() {
+  if command -v timeout >/dev/null 2>&1; then
+    timeout "$WRANGLER_CHECK_TIMEOUT" "${WRANGLER[@]}" "$@"
+    return
+  fi
+
+  if command -v gtimeout >/dev/null 2>&1; then
+    gtimeout "$WRANGLER_CHECK_TIMEOUT" "${WRANGLER[@]}" "$@"
+    return
+  fi
+
+  "${WRANGLER[@]}" "$@"
+}
+
 ensure_project_exists() {
-  if run_wrangler pages project list --json | grep -Eq "\"name\"[[:space:]]*:[[:space:]]*\"${PROJECT_NAME}\""; then
+  local project_list_output
+  local project_list_status=0
+  local create_output
+  local create_status=0
+
+  project_list_output="$(run_wrangler_check pages project list --json 2>&1)" || project_list_status=$?
+  if [[ "$project_list_status" -eq 124 ]]; then
+    fail "Wrangler project lookup timed out after ${WRANGLER_CHECK_TIMEOUT}s. Run 'wrangler pages project list --json' directly and verify Cloudflare connectivity before retrying."
+  fi
+  if [[ "$project_list_status" -ne 0 ]]; then
+    printf '%s\n' "$project_list_output" >&2
+    fail "Unable to list Cloudflare Pages projects."
+  fi
+
+  if printf '%s\n' "$project_list_output" | grep -Eq "\"(name|Project Name)\"[[:space:]]*:[[:space:]]*\"${PROJECT_NAME}\""; then
     return 0
   fi
 
   log "Creating Cloudflare Pages project '${PROJECT_NAME}'..."
-  run_wrangler pages project create "$PROJECT_NAME" --production-branch "$PRODUCTION_BRANCH"
+  create_output="$(run_wrangler pages project create "$PROJECT_NAME" --production-branch "$PRODUCTION_BRANCH" 2>&1)" || create_status=$?
+  if [[ "$create_status" -ne 0 ]]; then
+    if printf '%s\n' "$create_output" | grep -Fq "already exists"; then
+      log "Cloudflare Pages project '${PROJECT_NAME}' already exists."
+      return 0
+    fi
+
+    printf '%s\n' "$create_output" >&2
+    return "$create_status"
+  fi
+
+  printf '%s\n' "$create_output" >&2
 }
 
 main() {
@@ -57,7 +102,13 @@ main() {
   require_cmd git
   resolve_wrangler
 
-  if ! run_wrangler whoami >/dev/null 2>&1; then
+  log "Checking Wrangler authentication..."
+  local auth_status=0
+  run_wrangler_check whoami || auth_status=$?
+  if [[ "$auth_status" -eq 124 ]]; then
+    fail "Wrangler auth check timed out after ${WRANGLER_CHECK_TIMEOUT}s. Run 'wrangler whoami' directly and verify Cloudflare connectivity before retrying."
+  fi
+  if [[ "$auth_status" -ne 0 ]]; then
     fail "Wrangler is not authenticated. Run 'wrangler login' or export CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID."
   fi
 

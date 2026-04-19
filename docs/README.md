@@ -27,6 +27,7 @@ For direct uploads to Cloudflare Pages, run:
 
 The script will:
 
+- install `wrangler` globally with npm if it is missing
 - create the `flipbook-releases` Pages project if it does not exist
 - deploy `docs/`
 - attach git branch and commit metadata to the deployment

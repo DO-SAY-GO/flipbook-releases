@@ -14,3 +14,5 @@ Direct install:
 Cloudflare Pages direct upload:
 
 - `./deploy-pages.sh`
+
+If `wrangler` is missing, the script now installs it globally with `npm install --global wrangler@latest` before deploying.

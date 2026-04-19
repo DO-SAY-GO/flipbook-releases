@@ -1,6 +1,6 @@
 # FlipBook
 
-### *Turn files and browser sessions into scrubbable static viewers*
+### *Turn files and browser sessions into scrubbable static views.*
 
 Public releases live in this repository.
 

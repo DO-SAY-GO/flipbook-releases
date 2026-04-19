@@ -62,6 +62,15 @@ export const siteConfig = {
             thumbnailImage: "https://steve-jobs-predicts-the-iphone-in-1981-x-4r4gn.pages.dev/pages/000612.jpg",
             thumbnailAlt: "A Steve Jobs interview frame rendered in the FlipBook viewer",
             thumbnailText: "1,224 frames"
+        },
+        {
+            title: "BrowserBox Flipbook Search Session",
+            description: "A live BrowserBox browsing session exploring what a flipbook is across Google, Wikipedia, and FlipBook, published as a 2,340-frame replayable web artifact.",
+            badge: "BrowserBox",
+            link: "https://browser-session-8kd6i.pages.dev",
+            thumbnailImage: "https://browser-session-8kd6i.pages.dev/pages/001200.jpg",
+            thumbnailAlt: "A BrowserBox session browsing a flip book article and search results in FlipBook",
+            thumbnailText: "2,340 frames"
         }
     ],
     faqs: [

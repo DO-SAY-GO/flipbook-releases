@@ -87,7 +87,7 @@ code {
     font-weight: 600;
     font-size: 1.125rem;
     letter-spacing: -0.01em;
-    color: var(--text-main);
+    color: var(--accent);
 }
 
 .brand-mark {
@@ -338,10 +338,14 @@ code {
 
 .bb-header {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 1rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
+}
+
+.bb-header .section-title {
+    margin-bottom: 0;
 }
 
 .bb-badge {

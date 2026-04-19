@@ -7,10 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('a');
             card.href = demo.link;
             card.className = 'demo-card';
+            card.target = '_self';
+
+            const hasThumbnailImage = Boolean(demo.thumbnailImage);
+            const thumbClassName = hasThumbnailImage ? 'demo-thumb has-media' : 'demo-thumb';
+            const thumbMarkup = hasThumbnailImage
+                ? `<img class="demo-thumb-media" src="${demo.thumbnailImage}" alt="${demo.thumbnailAlt || `${demo.title} thumbnail`}" loading="lazy">`
+                : `<span class="demo-thumb-placeholder">${demo.thumbnailText}</span>`;
+            const thumbLabelMarkup = hasThumbnailImage && demo.thumbnailText
+                ? `<span class="demo-thumb-label">${demo.thumbnailText}</span>`
+                : '';
 
             card.innerHTML = `
-                <div class="demo-thumb">
-                    <span>${demo.thumbnailText}</span>
+                <div class="${thumbClassName}">
+                    ${thumbMarkup}
+                    ${thumbLabelMarkup}
                 </div>
                 <div class="demo-content">
                     <div class="demo-header">

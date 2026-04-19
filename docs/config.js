@@ -1,46 +1,67 @@
 export const siteConfig = {
     demos: [
         {
-            title: "PDF Document",
-            description: "A standard visual document rendered as a fast page stream.",
+            title: "Bitcoin Whitepaper",
+            description: "The original Bitcoin paper rendered as a clean 9-page static document viewer.",
             badge: "PDF",
-            link: "#",
-            thumbnailText: "PDF Preview"
+            link: "https://bitcoin-vhimg.pages.dev",
+            thumbnailImage: "https://bitcoin-vhimg.pages.dev/pages/000001.jpg",
+            thumbnailAlt: "Bitcoin whitepaper cover page in the FlipBook viewer",
+            thumbnailText: "9 pages"
         },
         {
-            title: "Video Sequence",
-            description: "A short video presented as scrubbable, inspectable frames.",
-            badge: "Video",
-            link: "#",
-            thumbnailText: "Video Preview"
+            title: "Elden Ring Weapons List",
+            description: "A wide XLSX tiled into readable bands with frozen context preserved across pages.",
+            badge: "XLSX",
+            link: "https://elden-ring-weapons-list-37c13.pages.dev",
+            thumbnailImage: "https://elden-ring-weapons-list-37c13.pages.dev/pages/000001.jpg",
+            thumbnailAlt: "Elden Ring weapon spreadsheet rendered as a tiled FlipBook page",
+            thumbnailText: "37 pages"
         },
         {
-            title: "Slide Presentation",
-            description: "PowerPoint or Keynote exported to a static step-by-step viewer.",
+            title: "Daihatsu Hijet Service Manual",
+            description: "A 909-page OCR service manual published as a static viewer without pagination lag.",
+            badge: "Manual",
+            link: "https://hijet-s100-s110-s120-s130-service-manual-2n1gf.pages.dev",
+            thumbnailImage: "https://hijet-s100-s110-s120-s130-service-manual-2n1gf.pages.dev/pages/000001.jpg",
+            thumbnailAlt: "Daihatsu Hijet service manual cover rendered in FlipBook",
+            thumbnailText: "909 pages"
+        },
+        {
+            title: "NuScale Investor Presentation",
+            description: "A modern investor deck exported into a crisp slide-by-slide static presentation.",
             badge: "Slides",
-            link: "#",
-            thumbnailText: "Presentation Preview"
+            link: "https://nuscale-investor-presentation-cb1xn.pages.dev",
+            thumbnailImage: "https://nuscale-investor-presentation-cb1xn.pages.dev/pages/000001.jpg",
+            thumbnailAlt: "NuScale investor presentation cover slide in the FlipBook viewer",
+            thumbnailText: "16 pages"
         },
         {
-            title: "Spreadsheet",
-            description: "Wide, complex tables captured and flattened into simple page streams.",
-            badge: "Excel",
-            link: "#",
-            thumbnailText: "Spreadsheet Preview"
+            title: "Swiss Village Short",
+            description: "A vertical travel short converted into 438 scrubbable frames with video-style controls.",
+            badge: "Video",
+            link: "https://is-this-the-most-beautiful-village-in-th-tcnby.pages.dev",
+            thumbnailImage: "https://is-this-the-most-beautiful-village-in-th-tcnby.pages.dev/pages/000183.jpg",
+            thumbnailAlt: "A mountain village frame from a vertical travel video rendered in FlipBook",
+            thumbnailText: "438 frames"
         },
         {
-            title: "Word Document",
-            description: "Text-heavy documentation converted to static pages.",
-            badge: "Word",
-            link: "#",
-            thumbnailText: "Document Preview"
+            title: "Neo Tokyo Motorcycle",
+            description: "A short cyberpunk clip rendered into frame-accurate playback and fast visual scrubbing.",
+            badge: "Video",
+            link: "https://neo-tokyo-motorcycle-s08zm.pages.dev",
+            thumbnailImage: "https://neo-tokyo-motorcycle-s08zm.pages.dev/pages/000073.jpg",
+            thumbnailAlt: "A neon motorcycle frame from a cyberpunk video rendered in FlipBook",
+            thumbnailText: "145 frames"
         },
         {
-            title: "BrowserBox Session",
-            description: "A recorded browser session replayed as an interactive visual artifact.",
-            badge: "Session Replay",
-            link: "#",
-            thumbnailText: "Session Preview"
+            title: "Steve Jobs Interview Clip",
+            description: "A longer archival interview clip published as 1,224 frames for precise searching and replay.",
+            badge: "Video",
+            link: "https://steve-jobs-predicts-the-iphone-in-1981-x-4r4gn.pages.dev",
+            thumbnailImage: "https://steve-jobs-predicts-the-iphone-in-1981-x-4r4gn.pages.dev/pages/000612.jpg",
+            thumbnailAlt: "A Steve Jobs interview frame rendered in the FlipBook viewer",
+            thumbnailText: "1,224 frames"
         }
     ],
     faqs: [

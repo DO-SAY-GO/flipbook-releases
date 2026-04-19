@@ -13,4 +13,4 @@ Direct install:
 - `curl -fsSL https://flipbook.browserbox.io/install.sh | bash`
 - `irm https://flipbook.browserbox.io/install.ps1 | iex`
 
-*Note: for browser session recordings you need a BrowserBox license*
+*Note: browser session recordings require a [BrowserBox license](https://browserbox.io)*

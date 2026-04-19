@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlipBook</title>
+  <meta
+    name="description"
+    content="Turn PDFs, Office documents, videos, images, and BrowserBox sessions into fast static viewers."
+  >
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="container nav-container">
+      <a class="brand" href="./">FlipBook</a>
+      <div class="nav-links">
+        <a href="#demos">Demos</a>
+        <a href="#install">Install</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container narrow">
+      <h1 class="hero-title">Turn files and browser sessions into scrubbable static viewers.</h1>
+      <p class="hero-subtitle">
+        FlipBook converts documents, slide decks, spreadsheets, videos, images, and BrowserBox
+        recordings into fast page streams you can host anywhere static files work.
+      </p>
+      <div class="hero-ctas">
+        <a class="button primary" href="#install">Install</a>
+        <a class="button secondary" href="https://github.com/DO-SAY-GO/flipbook-releases/releases/latest">Latest Release</a>
+      </div>
+      <div class="scrubber-demo" aria-hidden="true">
+        <div class="scrubber-frames">
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+          <div class="frame"></div>
+        </div>
+        <div class="scrubber-playhead"></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section muted">
+    <div class="container narrow text-center">
+      <p class="lead-text">
+        The output is just static HTML, CSS, JavaScript, and image assets. No runtime server is
+        required. Host it on Cloudflare Pages, GitHub Pages, S3, Vercel, Netlify, or your own web
+        server.
+      </p>
+    </div>
+  </section>
+
+  <section id="demos" class="section">
+    <div class="container">
+      <h2 class="section-title">Examples</h2>
+      <div id="demo-container" class="demo-grid"></div>
+    </div>
+  </section>
+
+  <section class="section muted">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="flow-grid">
+        <div class="flow-step">
+          <h3>Convert</h3>
+          <p>Feed FlipBook a PDF, Office document, image set, video, or URL.</p>
+        </div>
+        <div class="flow-step">
+          <h3>Generate</h3>
+          <p>FlipBook renders pages or frames and emits a static viewer with a lightweight manifest.</p>
+        </div>
+        <div class="flow-step">
+          <h3>Publish</h3>
+          <p>Deploy the output anywhere static files can be served, or let FlipBook publish to Cloudflare Pages.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow text-block">
+      <h2 class="section-title">What It Is For</h2>
+      <p>
+        FlipBook is useful when the original source format is heavier than the browsing experience
+        needs to be. Instead of shipping an Office stack, a video player, or a full app runtime,
+        you flatten the source into static pages and a viewer that is fast to inspect and easy to host.
+      </p>
+      <p>
+        That makes it a good fit for product docs, release decks, archived videos, captured browser
+        sessions, and any artifact where scrubbing matters more than native editing.
+      </p>
+    </div>
+  </section>
+
+  <section class="section muted browserbox-section">
+    <div class="container narrow">
+      <div class="bb-header">
+        <h2 class="section-title">BrowserBox Integration</h2>
+        <span class="bb-badge">Optional Integration</span>
+      </div>
+      <p>
+        FlipBook works as a standalone utility for local files. If you pass a URL instead, it uses
+        BrowserBox to record a live web session and then publishes that capture as a static artifact.
+      </p>
+      <p class="small-text">
+        BrowserBox requires a separate BrowserBox license for session recording mode.
+      </p>
+      <a class="link-arrow" href="https://browserbox.io">Learn more about BrowserBox</a>
+    </div>
+  </section>
+
+  <section id="install" class="section">
+    <div class="container narrow">
+      <div class="install-card">
+        <h2>Install FlipBook</h2>
+        <p>Install the latest signed binary for your platform.</p>
+        <div class="mt-4">
+          <a class="button primary" href="https://github.com/DO-SAY-GO/flipbook-releases/releases/latest">Browse Releases</a>
+        </div>
+        <div class="mt-4">
+          <p><code>curl -fsSL https://raw.githubusercontent.com/DO-SAY-GO/flipbook-releases/main/install.sh | bash</code></p>
+          <p><code>irm https://raw.githubusercontent.com/DO-SAY-GO/flipbook-releases/main/install.ps1 | iex</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section muted">
+    <div class="container narrow">
+      <h2 class="section-title">FAQ</h2>
+      <div id="faq-container"></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <span class="brand">FlipBook</span>
+        <span class="built-by">Built by DOSAYGO</span>
+      </div>
+      <div class="footer-links">
+        <a href="./">Home</a>
+        <a href="https://browserbox.io">BrowserBox</a>
+        <a href="https://github.com/DO-SAY-GO/flipbook-releases/releases/latest">Releases</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -13,7 +13,7 @@ STATE_DIR="${DATA_ROOT}/state"
 BINARY_PATH="${BIN_DIR}/flipbook-cli"
 LAST_UPDATE_FILE="${STATE_DIR}/last-update-check"
 INSTALLED_TAG_FILE="${STATE_DIR}/installed-tag"
-UPDATE_INTERVAL_SECONDS="${FLIPBOOK_UPDATE_INTERVAL_SECONDS:-86400}"
+UPDATE_INTERVAL_SECONDS="${FLIPBOOK_UPDATE_INTERVAL_SECONDS:-10800}"
 CHECKSUMS_NAME="SHA256SUMS.txt"
 
 log() {
@@ -502,6 +502,19 @@ main() {
 
   require_cmd curl
   ensure_binary
+
+  # Report the authoritative installed version rather than the binary's
+  # built-in string, which may fall back to a stale Cargo.toml value on
+  # older releases that lacked the build-time version stamp.
+  if [[ "${1:-}" == "--version" || "${1:-}" == "-V" ]]; then
+    local installed_tag
+    installed_tag="$(cat "$INSTALLED_TAG_FILE" 2>/dev/null || true)"
+    if [[ -n "$installed_tag" ]]; then
+      printf 'flipbook %s\n' "$installed_tag"
+      exit 0
+    fi
+  fi
+
   exec "$BINARY_PATH" "$@"
 }
 

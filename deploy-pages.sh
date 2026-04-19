@@ -116,6 +116,8 @@ main() {
 
   ensure_project_exists
 
+  cp install.* docs/
+
   COMMIT_HASH="$(git rev-parse HEAD)"
   COMMIT_MESSAGE="$(git log -1 --pretty=%s)"
 

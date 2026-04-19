@@ -5,7 +5,8 @@ try {
 } catch { }
 
 $ReleaseRepo = if ($env:FLIPBOOK_RELEASE_REPO) { $env:FLIPBOOK_RELEASE_REPO } else { "DO-SAY-GO/flipbook-releases" }
-$RawSelfUrl = if ($env:FLIPBOOK_INSTALL_URL) { $env:FLIPBOOK_INSTALL_URL } else { "https://raw.githubusercontent.com/DO-SAY-GO/flipbook-releases/main/install.ps1" }
+$SiteUrl = if ($env:FLIPBOOK_SITE_URL) { $env:FLIPBOOK_SITE_URL } else { "https://flipbook.browserbox.io" }
+$RawSelfUrl = if ($env:FLIPBOOK_INSTALL_URL) { $env:FLIPBOOK_INSTALL_URL } else { "$SiteUrl/install.ps1" }
 $DataRoot = if ($env:FLIPBOOK_DATA_DIR) { $env:FLIPBOOK_DATA_DIR } else { Join-Path $env:LOCALAPPDATA "Programs\FlipBook" }
 $InstallDir = if ($env:FLIPBOOK_INSTALL_DIR) { $env:FLIPBOOK_INSTALL_DIR } else { Join-Path $DataRoot "bin" }
 $WrapperPath = Join-Path $InstallDir "flipbook.ps1"
@@ -110,21 +111,42 @@ function Get-LocalVersionTag {
         return "not_installed"
     }
 
+    $reportedTag = $null
+    $installedTag = $null
+
     try {
         $output = & $CliPath --version 2>$null | Out-String
         $version = Get-SemverFromText -Text $output
-        if (-not $version) {
-            return "unknown"
+        if ($version) {
+            $reportedTag = if ($version.StartsWith("v")) { $version } else { "v$version" }
         }
+    } catch { }
 
-        if ($version.StartsWith("v")) {
-            return $version
+    try {
+        if (Test-Path $InstalledTagFile) {
+            $storedVersion = (Get-Content $InstalledTagFile -Raw).Trim()
+            if ($storedVersion -match '^(v?\d+\.\d+\.\d+)$') {
+                $installedTag = if ($storedVersion.StartsWith("v")) { $storedVersion } else { "v$storedVersion" }
+            }
         }
+    } catch { }
 
-        return "v$version"
-    } catch {
-        return "unknown"
+    if ($reportedTag -and $installedTag) {
+        if (Test-NeedsUpdate -CandidateTag $installedTag -CurrentTag $reportedTag) {
+            return $installedTag
+        }
+        return $reportedTag
     }
+
+    if ($installedTag) {
+        return $installedTag
+    }
+
+    if ($reportedTag) {
+        return $reportedTag
+    }
+
+    return "unknown"
 }
 
 function Test-NeedsUpdate {

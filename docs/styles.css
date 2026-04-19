@@ -77,16 +77,34 @@ code {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
 .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
     font-weight: 600;
     font-size: 1.125rem;
     letter-spacing: -0.01em;
+    color: var(--text-main);
+}
+
+.brand-mark {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 1.5rem;
 }
 
 .nav-links a {
-    margin-left: 1.5rem;
     color: var(--text-muted);
     font-size: 0.95rem;
 }
@@ -388,6 +406,7 @@ code {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .built-by {
@@ -398,18 +417,24 @@ code {
 .footer-links a {
     color: var(--text-muted);
     font-size: 0.9rem;
-    margin-left: 1.5rem;
 }
 
 .footer-links a:hover {
     color: var(--text-main);
 }
 
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
 @media (max-width: 640px) {
     .hero { padding: 4rem 0; }
     .hero-ctas { flex-direction: column; }
+    .nav-container { align-items: flex-start; }
+    .nav-links { gap: 1rem; }
     .footer-content { flex-direction: column; align-items: flex-start; }
-    .footer-links a { margin-left: 0; margin-right: 1.5rem; }
     @keyframes scrub {
         0% { transform: translateX(10px); }
         100% { transform: translateX(calc(100vw - 60px)); }

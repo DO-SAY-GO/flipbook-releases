@@ -2,7 +2,8 @@
 set -euo pipefail
 
 RELEASE_REPO="${FLIPBOOK_RELEASE_REPO:-DO-SAY-GO/flipbook-releases}"
-RAW_SELF_URL="${FLIPBOOK_INSTALL_URL:-https://raw.githubusercontent.com/DO-SAY-GO/flipbook-releases/main/install.sh}"
+SITE_URL="${FLIPBOOK_SITE_URL:-https://flipbook.browserbox.io}"
+RAW_SELF_URL="${FLIPBOOK_INSTALL_URL:-${SITE_URL}/install.sh}"
 COMMAND_NAME="${FLIPBOOK_COMMAND_NAME:-flipbook}"
 INSTALL_DIR="${FLIPBOOK_INSTALL_DIR:-$HOME/.local/bin}"
 WRAPPER_PATH="${INSTALL_DIR}/${COMMAND_NAME}"
@@ -11,6 +12,7 @@ BIN_DIR="${DATA_ROOT}/bin"
 STATE_DIR="${DATA_ROOT}/state"
 BINARY_PATH="${BIN_DIR}/flipbook-cli"
 LAST_UPDATE_FILE="${STATE_DIR}/last-update-check"
+INSTALLED_TAG_FILE="${STATE_DIR}/installed-tag"
 UPDATE_INTERVAL_SECONDS="${FLIPBOOK_UPDATE_INTERVAL_SECONDS:-86400}"
 CHECKSUMS_NAME="SHA256SUMS.txt"
 
@@ -44,6 +46,18 @@ extract_semver() {
     fi
   done <<< "$text"
   return 1
+}
+
+normalize_version_tag() {
+  local version="$1"
+  [[ -n "$version" ]] || return 1
+
+  if [[ "$version" != v* ]]; then
+    version="v${version}"
+  fi
+
+  _parse_tag "$version" || return 1
+  printf '%s\n' "$version"
 }
 
 _parse_tag() {
@@ -186,19 +200,33 @@ get_local_version_tag() {
     return 0
   fi
 
-  local output version
+  local output version reported_tag installed_tag
   output="$("$BINARY_PATH" --version 2>/dev/null || true)"
   version="$(extract_semver "$output" || true)"
-  if [[ -z "$version" ]]; then
-    printf '%s\n' "unknown"
+
+  reported_tag="$(normalize_version_tag "$version" || true)"
+  installed_tag="$(normalize_version_tag "$(cat "$INSTALLED_TAG_FILE" 2>/dev/null || true)" || true)"
+
+  if [[ -n "$reported_tag" && -n "$installed_tag" ]]; then
+    if version_is_newer "$installed_tag" "$reported_tag"; then
+      printf '%s\n' "$installed_tag"
+    else
+      printf '%s\n' "$reported_tag"
+    fi
     return 0
   fi
 
-  if [[ "$version" != v* ]]; then
-    version="v${version}"
+  if [[ -n "$installed_tag" ]]; then
+    printf '%s\n' "$installed_tag"
+    return 0
   fi
 
-  printf '%s\n' "$version"
+  if [[ -n "$reported_tag" ]]; then
+    printf '%s\n' "$reported_tag"
+    return 0
+  fi
+
+  printf '%s\n' "unknown"
 }
 
 detect_arch() {
@@ -336,7 +364,7 @@ download_and_install_binary() {
     cp "$candidate" "$tmp_binary"
     chmod +x "$tmp_binary"
     mv "$tmp_binary" "$BINARY_PATH"
-    printf '%s\n' "$tag" > "${STATE_DIR}/installed-tag"
+    printf '%s\n' "$tag" > "$INSTALLED_TAG_FILE"
     date +%s > "$LAST_UPDATE_FILE"
   )
 }

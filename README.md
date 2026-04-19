@@ -8,6 +8,5 @@ Primary site:
 
 Direct install:
 
-- `curl -fsSL flipbook.browserbox.io/install.sh | bash`
-- `irm flipbook.browserbox.io/install.ps1 | iex`
-
+- `curl -fsSL https://flipbook.browserbox.io/install.sh | bash`
+- `irm https://flipbook.browserbox.io/install.ps1 | iex`

@@ -8,6 +8,6 @@ Primary site:
 
 Direct install:
 
-- `curl -fsSL https://raw.githubusercontent.com/DO-SAY-GO/flipbook-releases/main/install.sh | bash`
-- `irm https://raw.githubusercontent.com/DO-SAY-GO/flipbook-releases/main/install.ps1 | iex`
+- `curl -fsSL flipbook.browserbox.io/install.sh | bash`
+- `irm flipbook.browserbox.io/install.ps1 | iex`
 

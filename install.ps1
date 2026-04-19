@@ -16,7 +16,7 @@ $StateDir = Join-Path $DataRoot "state"
 $LastUpdateFile = Join-Path $StateDir "last-update-check.txt"
 $InstalledTagFile = Join-Path $StateDir "installed-tag.txt"
 $ChecksumsName = "SHA256SUMS.txt"
-$UpdateIntervalSeconds = if ($env:FLIPBOOK_UPDATE_INTERVAL_SECONDS) { [int]$env:FLIPBOOK_UPDATE_INTERVAL_SECONDS } else { 86400 }
+$UpdateIntervalSeconds = if ($env:FLIPBOOK_UPDATE_INTERVAL_SECONDS) { [int]$env:FLIPBOOK_UPDATE_INTERVAL_SECONDS } else { 10800 }
 $Token = if ($env:GH_TOKEN) { $env:GH_TOKEN } elseif ($env:GITHUB_TOKEN) { $env:GITHUB_TOKEN } else { $null }
 
 function Write-InfoLine {
@@ -343,5 +343,18 @@ if (Test-InstallMode) {
 }
 
 Ensure-Binary
+
+# Report the authoritative installed version rather than the binary's
+# built-in string, which may fall back to a stale Cargo.toml value on
+# older releases that lacked the build-time version stamp.
+$isVersionFlag = ($args.Count -eq 1) -and ($args[0] -in @("--version", "-V"))
+if ($isVersionFlag -and (Test-Path $InstalledTagFile)) {
+    $storedTag = (Get-Content $InstalledTagFile -Raw).Trim()
+    if ($storedTag) {
+        Write-Output "flipbook $storedTag"
+        exit 0
+    }
+}
+
 & $CliPath @args
 exit $LASTEXITCODE

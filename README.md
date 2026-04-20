@@ -1,6 +1,8 @@
 # FlipBook
 
-### *Turn files and browser sessions into scrubbable static views.*
+### *Free one click file sharing for video, documents and browser sessions.*
+
+Flipbook turns files and browser sessions into scrubbable static views.
 
 Public releases live in this repository.
 

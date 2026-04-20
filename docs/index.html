@@ -3,12 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FlipBook</title>
+  <title>FlipBook | Free one-click file sharing for video, documents and sessions</title>
   <meta
     name="description"
-    content="Turn PDFs, Office documents, videos, images, and BrowserBox sessions into fast static apps."
+    content="Free one-click file sharing for video, documents and browser sessions. Turn files and URLs into fast static apps hosted on Cloudflare Pages."
   >
+  <link rel="canonical" href="https://flipbook.browserbox.io/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://flipbook.browserbox.io/">
+  <meta property="og:title" content="FlipBook | Free one-click file sharing for video and documents">
+  <meta property="og:description" content="Turn videos, documents, and browser sessions into fast static flipbooks. One-click publishing to Cloudflare Pages.">
+  <meta property="og:image" content="https://flipbook.browserbox.io/assets/branding/flipbook-mark-512.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://flipbook.browserbox.io/">
+  <meta property="twitter:title" content="FlipBook | Free one-click file sharing for video and documents">
+  <meta property="twitter:description" content="Turn videos, documents, and browser sessions into fast static flipbooks. One-click publishing to Cloudflare Pages.">
+  <meta property="twitter:image" content="https://flipbook.browserbox.io/assets/branding/flipbook-mark-512.png">
+
   <meta name="theme-color" content="#2563eb">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "FlipBook",
+      "operatingSystem": "Windows, Linux, macOS",
+      "applicationCategory": "MultimediaApplication, UtilitiesApplication",
+      "description": "Free one-click file sharing for video, documents and browser sessions. Turn files into fast static apps hosted on Cloudflare Pages.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  </script>
+
   <link rel="icon" href="./favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -20,7 +53,7 @@
   <nav class="top-nav">
     <div class="container nav-container">
       <a class="brand" href="./">
-        <img class="brand-mark" src="./assets/branding/flipbook-mark-256.png" alt="" width="40" height="40">
+        <img class="brand-mark" src="./assets/branding/flipbook-mark-256.png" alt="FlipBook Logo" width="40" height="40">
         <span>FlipBook</span>
       </a>
       <div class="nav-links">
@@ -35,6 +68,9 @@
     <div class="container narrow">
       <h1 class="hero-title">Static flipbooks of complex media.</h1>
       <p class="hero-subtitle">
+        <strong>Free one-click file sharing for video, documents and browser sessions.</strong>
+      </p>
+      <p class="hero-description">
         FlipBook converts documents, slide decks, spreadsheets, videos, images, and BrowserBox
         recordings into fast page streams and automatically hosts them on Cloudflare Pages as shareable links.
       </p>
@@ -139,8 +175,8 @@
           <a class="button primary" href="https://github.com/DO-SAY-GO/flipbook-releases/releases/latest">Browse Releases</a>
         </div>
         <div class="mt-4">
-          <p><code>curl -fsSL https://flipbook.browserbox.io/install.sh | bash</code></p>
-          <p><code>irm https://flipbook.browserbox.io/install.ps1 | iex</code></p>
+          <code>curl -fsSL https://flipbook.browserbox.io/install.sh | bash</code>
+          <code>irm https://flipbook.browserbox.io/install.ps1 | iex</code>
         </div>
       </div>
     </div>
@@ -157,7 +193,7 @@
     <div class="container footer-content">
       <div class="footer-left">
         <a class="brand" href="./">
-          <img class="brand-mark" src="./assets/branding/flipbook-mark-256.png" alt="" width="40" height="40">
+          <img class="brand-mark" src="./assets/branding/flipbook-mark-256.png" alt="FlipBook Logo" width="40" height="40">
           <span>FlipBook</span>
         </a>
         <span class="built-by">Built by DOSAYGO</span>

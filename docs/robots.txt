@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://flipbook.browserbox.io/sitemap.xml

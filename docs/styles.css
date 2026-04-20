@@ -141,7 +141,19 @@ code {
     font-size: 1.25rem;
     color: var(--text-muted);
     max-width: 650px;
+    margin: 0 auto var(--space-4);
+}
+
+.hero-subtitle strong {
+    color: var(--text-main);
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 650px;
     margin: 0 auto var(--space-7);
+    line-height: 1.5;
 }
 
 .hero-ctas {
@@ -391,6 +403,19 @@ code {
 
 .install-card h2 { margin-bottom: 1rem; }
 .install-card p { color: var(--text-muted); margin-bottom: 0.5rem; }
+
+.install-card code {
+    display: block;
+    background: var(--bg-muted);
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    margin-top: var(--space-2);
+    overflow-wrap: anywhere;
+    word-break: break-all;
+    font-size: 0.85em;
+    text-align: left;
+    border: 1px solid var(--border-color);
+}
 
 .bb-header {
     display: flex;

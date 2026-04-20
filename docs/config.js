@@ -4,7 +4,7 @@ export const siteConfig = {
             title: "Bitcoin Whitepaper",
             description: "The original Bitcoin paper rendered as a clean 9-page static document viewer.",
             badge: "PDF",
-            link: "https://bitcoin-vhimg.pages.dev",
+            link: "https://bitcoin-whitepaper-1abel.pages.dev",
             thumbnailImage: "https://bitcoin-vhimg.pages.dev/pages/000001.jpg",
             thumbnailAlt: "Bitcoin whitepaper cover page in the FlipBook viewer",
             thumbnailText: "9 pages"
@@ -13,7 +13,7 @@ export const siteConfig = {
             title: "Elden Ring Weapons List",
             description: "A wide XLSX tiled into readable bands with frozen context preserved across pages.",
             badge: "XLSX",
-            link: "https://elden-ring-weapons-list-37c13.pages.dev",
+            link: "https://elden-ring-weapons-list-qrclw.pages.dev",
             thumbnailImage: "https://elden-ring-weapons-list-37c13.pages.dev/pages/000001.jpg",
             thumbnailAlt: "Elden Ring weapon spreadsheet rendered as a tiled FlipBook page",
             thumbnailText: "37 pages"
@@ -31,7 +31,7 @@ export const siteConfig = {
             title: "NuScale Investor Presentation",
             description: "A modern investor deck exported into a crisp slide-by-slide static presentation.",
             badge: "Slides",
-            link: "https://nuscale-investor-presentation-cb1xn.pages.dev",
+            link: "https://nuscale-investor-presentation-y9386.pages.dev",
             thumbnailImage: "https://nuscale-investor-presentation-cb1xn.pages.dev/pages/000001.jpg",
             thumbnailAlt: "NuScale investor presentation cover slide in the FlipBook viewer",
             thumbnailText: "16 pages"
@@ -40,7 +40,7 @@ export const siteConfig = {
             title: "Swiss Village Short",
             description: "A vertical travel short converted into 438 scrubbable frames with video-style controls.",
             badge: "Video",
-            link: "https://is-this-the-most-beautiful-village-in-th-tcnby.pages.dev",
+            link: "https://swiss-village-9ti6n.pages.dev",
             thumbnailImage: "https://is-this-the-most-beautiful-village-in-th-tcnby.pages.dev/pages/000183.jpg",
             thumbnailAlt: "A mountain village frame from a vertical travel video rendered in FlipBook",
             thumbnailText: "438 frames"
@@ -49,7 +49,7 @@ export const siteConfig = {
             title: "Neo Tokyo Motorcycle",
             description: "A short cyberpunk clip rendered into frame-accurate playback and fast visual scrubbing.",
             badge: "Video",
-            link: "https://neo-tokyo-motorcycle-s08zm.pages.dev",
+            link: "https://neo-tokyo-motorbike-with-girlfriend-e5r1w.pages.dev",
             thumbnailImage: "https://neo-tokyo-motorcycle-s08zm.pages.dev/pages/000073.jpg",
             thumbnailAlt: "A neon motorcycle frame from a cyberpunk video rendered in FlipBook",
             thumbnailText: "145 frames"
@@ -58,10 +58,37 @@ export const siteConfig = {
             title: "Steve Jobs Interview Clip",
             description: "A longer archival interview clip published as 1,224 frames for precise searching and replay.",
             badge: "Video",
-            link: "https://steve-jobs-predicts-the-iphone-in-1981-x-4r4gn.pages.dev",
+            link: "https://steve-jobs-interview-clip-6npqx.pages.dev",
             thumbnailImage: "https://steve-jobs-predicts-the-iphone-in-1981-x-4r4gn.pages.dev/pages/000612.jpg",
             thumbnailAlt: "A Steve Jobs interview frame rendered in the FlipBook viewer",
             thumbnailText: "1,224 frames"
+        },
+        {
+            title: "Attention Is All You Need",
+            description: "The original transformer paper rendered as a fast 15-page research document viewer.",
+            badge: "Paper",
+            link: "https://attention-is-all-you-need-nl226.pages.dev",
+            thumbnailImage: "https://attention-is-all-you-need-nl226.pages.dev/pages/000001.jpg",
+            thumbnailAlt: "Attention Is All You Need title page rendered in the FlipBook viewer",
+            thumbnailText: "15 pages"
+        },
+        {
+            title: "AlphaFold Structure Predictions",
+            description: "The AlphaFold paper published as a 24-page scientific article with quick page scrubbing.",
+            badge: "Paper",
+            link: "https://alphafold-accurate-structure-predictions-g2640.pages.dev",
+            thumbnailImage: "https://alphafold-accurate-structure-predictions-g2640.pages.dev/pages/000001.jpg",
+            thumbnailAlt: "AlphaFold paper opening page rendered in the FlipBook viewer",
+            thumbnailText: "24 pages"
+        },
+        {
+            title: "Skateboard Clip",
+            description: "A short vertical skate clip converted into 242 scrubbable frames with instant seeking.",
+            badge: "Video",
+            link: "https://skateboard-8n2na.pages.dev",
+            thumbnailImage: "https://skateboard-8n2na.pages.dev/pages/000121.jpg",
+            thumbnailAlt: "A skateboarding frame rendered in the FlipBook viewer",
+            thumbnailText: "242 frames"
         },
         {
             title: "BrowserBox Flipbook Search Session",

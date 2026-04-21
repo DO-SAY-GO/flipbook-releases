@@ -92,12 +92,12 @@ export const siteConfig = {
         },
         {
             title: "BrowserBox Flipbook Search Session",
-            description: "A live BrowserBox browsing session exploring what a flipbook is across Google, Wikipedia, and FlipBook, published as a 2,340-frame replayable web artifact.",
+            description: "A live BrowserBox browsing session exploring what a flipbook is across Google, Wikipedia, and FlipBook, published as a 4,638-frame replayable web artifact.",
             badge: "BrowserBox",
-            link: "https://browser-session-8kd6i.pages.dev",
-            thumbnailImage: "https://browser-session-8kd6i.pages.dev/pages/001200.jpg",
+            link: "https://browser-session-it94u.pages.dev",
+            thumbnailImage: "https://browser-session-it94u.pages.dev/pages/002319.jpg",
             thumbnailAlt: "A BrowserBox session browsing a flip book article and search results in FlipBook",
-            thumbnailText: "2,340 frames"
+            thumbnailText: "4,638 frames"
         }
     ],
     faqs: [
